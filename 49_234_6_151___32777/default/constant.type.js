@@ -2,20 +2,28 @@ var constantBody = require('constant.body');
 
 var constantType = {
     Harvester: {
-        tag: 'Harvester',
+        name: 'Harvester',
         body: constantBody.Default,
     },
     Builder: {
-        tag: 'Builder',
+        name: 'Builder',
         body: constantBody.Default,
     },
     Upgrader: {
-        tag: 'Upgrader',
+        name: 'Upgrader',
         body: constantBody.Default,
     },
     Repairer: {
-        tag: 'Repairer',
+        name: 'Repairer',
         body: constantBody.Default,
+    },
+    Digger: {
+        name: 'Digger',
+        body: constantBody.Digger,
+    },
+    Transfer: {
+        name: 'Transfer',
+        body: constantBody.Transfer,
     },
 };
 

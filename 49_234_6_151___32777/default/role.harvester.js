@@ -18,7 +18,7 @@ function cmp(a, b) {
 }
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Harvester.tag) {
+    if (creep.memory.role != constantType.Harvester.name) {
         return
     }
 

@@ -3,19 +3,32 @@
 var base = require('step.base');
 
 module.exports.create = function() {
-    var obj = new Object;
+    var obj = base.create();
 
-    obj.run = function(creep) {
-        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-        }
-    };
-
-    obj.check = function(creep) {
-        return false;
-    };
+    obj.caller = 'step.upgrade';
 
     obj.hello = '⚡ upgrade';
 
     return obj;
 }
+
+module.exports.run = function(step, creep) {
+    if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+    }
+};
+
+module.exports.check = function(step, creep) {
+    if (creep.store[RESOURCE_ENERGY] == 0) {
+        return true;
+    }
+    return false;
+};
+
+module.exports.start = function(step, creep) {
+    base.start(step, creep);
+};
+
+module.exports.end = function(step, creep) {
+    base.end(step, creep);
+};

@@ -4,14 +4,15 @@ var taskBase = require('task.base');
 var taskMaker = require('task.maker');
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Builder.name) {
+    if (creep.memory.role != constantType.Transfer.name) {
         return
     }
-
+    
     if (!creep.memory.task) {
-        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-        if (targets.length) {
-            creep.memory.task = taskMaker.makeBuild(targets[0]);
+        var from = Game.getObjectById(creep.memory.param.fromId);
+        var to = Game.getObjectById(creep.memory.param.toId);
+        if (from && to) {
+            creep.memory.task = taskMaker.makeTransfer(from, to);
         }
     }
     if (creep.memory.task) {

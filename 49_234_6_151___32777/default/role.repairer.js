@@ -9,7 +9,7 @@ function cmp(a, b) {
 }
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Repairer.tag) {
+    if (creep.memory.role != constantType.Repairer.name) {
         return
     }
 

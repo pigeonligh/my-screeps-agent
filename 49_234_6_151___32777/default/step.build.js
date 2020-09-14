@@ -5,20 +5,33 @@ var base = require('step.base');
 module.exports.create = function(target) {
     var obj = base.create();
 
-    obj.run = function(creep) {
-        if (creep.build(target) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-        }
-    };
-
-    obj.check = function(creep) {
-        if (creep.store[RESOURCE_ENERGY] == 0 || target.progress == target.progressTotal) {
-            return true;
-        }
-        return false;
-    };
+    obj.target = target;
+    obj.caller = 'step.build';
 
     obj.hello = '🚧 build';
 
     return obj;
-}
+};
+
+module.exports.run = function(step, creep) {
+    var target = Game.getObjectById(step.target.id);
+    if (creep.build(target) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+    }
+};
+
+module.exports.check = function(step, creep) {
+    var target = Game.getObjectById(step.target.id);
+    if (creep.store[RESOURCE_ENERGY] == 0 || target.progress == target.progressTotal) {
+        return true;
+    }
+    return false;
+};
+
+module.exports.start = function(step, creep) {
+    base.start(step, creep);
+};
+
+module.exports.end = function(step, creep) {
+    base.end(step, creep);
+};

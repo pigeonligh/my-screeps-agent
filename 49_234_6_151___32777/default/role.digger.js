@@ -4,14 +4,14 @@ var taskBase = require('task.base');
 var taskMaker = require('task.maker');
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Builder.name) {
-        return
+    if (creep.memory.role != constantType.Digger.name) {
+        return;
     }
-
     if (!creep.memory.task) {
-        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-        if (targets.length) {
-            creep.memory.task = taskMaker.makeBuild(targets[0]);
+        var container = Game.getObjectById(creep.memory.param.containerId);
+        var source = Game.getObjectById(creep.memory.param.sourceId);
+        if (container && source) {
+            creep.memory.task = taskMaker.makeDig(container, source);
         }
     }
     if (creep.memory.task) {

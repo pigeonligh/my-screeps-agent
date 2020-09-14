@@ -4,6 +4,8 @@ var roleHarvester = require('role.harvester');
 var roleBuilder = require('role.builder');
 var roleUpgrader = require('role.upgrader');
 var roleRepairer = require('role.repairer');
+var roleDigger = require('role.digger');
+var roleTransfer = require('role.transfer');
 
 module.exports.loop = function() {
 
@@ -22,7 +24,6 @@ module.exports.loop = function() {
 
     var tower = Game.getObjectById('585883e670ef980');
     if (tower) {
-        console.log("tower");
         var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax && structure.hits * 2 < structure.hitsMax
         });
@@ -42,5 +43,7 @@ module.exports.loop = function() {
         roleBuilder.run(creep);
         roleUpgrader.run(creep);
         roleRepairer.run(creep);
+        roleDigger.run(creep);
+        roleTransfer.run(creep);
     }
 }

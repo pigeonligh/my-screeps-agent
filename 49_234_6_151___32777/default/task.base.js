@@ -2,27 +2,47 @@
 
 var State = require('constant.state');
 
-module.exports.create = function(tasks) {
-    var task = new Object;
-
-    task.list = tasks
-
-    task.run = function(creep) {
-        for (var index in task.list) {
-            step = task.list[index];
-            if (step.state == State.StepPending) {
-                step.start(creep);
-            }
-            if (step.state == State.StepRunning) {
-                step.run(creep);
-                if (step.check(creep)) {
-                    step.end(creep);
-                }
-                return false;
-            }
+function pipeline(creep, list) {
+    for (var index in list) {
+        step = list[index];
+        var caller = require(step.caller);
+        if (step.state == State.StepPending) {
+            caller.start(step, creep);
         }
-        return true;
+        if (step.state == State.StepRunning) {
+            caller.run(step, creep);
+            if (caller.check(step, creep)) {
+                caller.end(step, creep);
+            }
+            return false;
+        }
     }
+    return true;
+}
+
+module.exports.create = function(name, tasks, cycle) {
+    var task = {
+        name: name,
+        list: tasks,
+        cycle: cycle,
+    };
 
     return task;
-}
+};
+
+module.exports.step = function(task, creep) {
+    if (!pipeline(creep, task.list)) {
+        return false;
+    }
+    if (task.cycle && task.cycle.length > 0) {
+        if (!pipeline(creep, task.cycle)) {
+            return false;
+        }
+        for (var index in task.cycle) {
+            step = task.cycle[index];
+            step.state = State.StepPending;
+        }
+        return false;
+    }
+    return true;
+};
