@@ -1,10 +1,10 @@
-var constantType = require('constant.type');
+var definationType = require('defination.type');
 
 var taskBase = require('task.base');
 var taskMaker = require('task.maker');
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Transfer.name) {
+    if (creep.memory.role != definationType.Transfer.name) {
         return
     }
     

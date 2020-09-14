@@ -1,6 +1,6 @@
 // Task: base
 
-var State = require('constant.state');
+var State = require('defination.state');
 
 function pipeline(creep, list) {
     for (var index in list) {

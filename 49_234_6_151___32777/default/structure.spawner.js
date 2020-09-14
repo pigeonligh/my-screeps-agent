@@ -1,9 +1,9 @@
-var constantType = require('constant.type');
+var definationType = require('defination.type');
 
 module.exports.run = function(spawner) {
     var config = [
         {
-            type: constantType.Digger,
+            type: definationType.Digger,
             tag: "digger1",
             number: 1,
             param: {
@@ -12,7 +12,7 @@ module.exports.run = function(spawner) {
             },
         },
         {
-            type: constantType.Digger,
+            type: definationType.Digger,
             tag: "digger2",
             number: 1,
             param: {
@@ -21,7 +21,7 @@ module.exports.run = function(spawner) {
             },
         },
         {
-            type: constantType.Transfer,
+            type: definationType.Transfer,
             tag: "transfer-upgrade",
             number: 1,
             param: {
@@ -30,25 +30,35 @@ module.exports.run = function(spawner) {
             }
         },
         {
-            type: constantType.Harvester,
-            tag: "harvester",
+            type: definationType.Harvester,
+            tag: "harvester1",
             number: 2,
-            param: {},
+            param: {
+                fromId: 'ba3c0774d80c3a8',
+            },
         },
         {
-            type: constantType.Builder,
+            type: definationType.Harvester,
+            tag: "harvester2",
+            number: 2,
+            param: {
+                fromId: 'ef990774d80108c',
+            },
+        },
+        {
+            type: definationType.Builder,
             tag: "builder",
             number: 0,
             param: {},
         },
         {
-            type: constantType.Upgrader,
+            type: definationType.Upgrader,
             tag: "upgrader",
             number: 4,
             param: {},
         },
         {
-            type: constantType.Repairer,
+            type: definationType.Repairer,
             tag: "repairer",
             number: 5,
             param: {},

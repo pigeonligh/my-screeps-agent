@@ -66,6 +66,30 @@ var maker = {
 
         return taskBase.create('Transfer', tasks, cycle);
     },
+
+    makeHarvest: function(from, to) {
+        tasks = [
+            stepHarvest.create(from),
+            stepTransfer.create(to),
+        ];
+        cycle = [];
+
+        return taskBase.create('Harvest', tasks, cycle);
+    },
+
+    makeRepair: function(target) {
+        var closestSource = target.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
+        });
+        
+        tasks = [
+            stepWithdraw.create(closestSource),
+            stepRepair.create(target),
+        ];
+        cycle = [];
+
+        return taskBase.create('Repair', tasks, cycle);
+    }
 };
 
 module.exports = maker;

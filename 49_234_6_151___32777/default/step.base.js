@@ -1,6 +1,6 @@
 // Step: base
 
-var State = require('constant.state');
+var State = require('defination.state');
 
 module.exports.create = function() {
     var obj = new Object;

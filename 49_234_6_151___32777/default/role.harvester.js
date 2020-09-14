@@ -1,4 +1,7 @@
-var constantType = require('constant.type');
+var definationType = require('defination.type');
+
+var taskBase = require('task.base');
+var taskMaker = require('task.maker');
 
 function calc(structure) {
     if (structure.structureType == STRUCTURE_SPAWN) {
@@ -18,16 +21,11 @@ function cmp(a, b) {
 }
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Harvester.name) {
+    if (creep.memory.role != definationType.Harvester.name) {
         return
     }
 
-    if (creep.store.getFreeCapacity() > 0) {
-        var sources = creep.room.find(FIND_SOURCES);
-        if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-        }
-    } else {
+    if (!creep.memory.task) {
         var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -37,12 +35,15 @@ module.exports.run = function(creep) {
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > structure.store.getCapacity(RESOURCE_ENERGY) * 0.2;
                 }
         });
-        if (targets.length > 0) {
+        var from = Game.getObjectById(creep.memory.param.fromId);
+        if (from && targets.length) {
             targets = targets.sort(cmp);
-            if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
-        } else {
+            creep.memory.task = taskMaker.makeHarvest(from, targets[0]);
+        }
+    }
+    if (creep.memory.task) {
+        if (taskBase.step(creep.memory.task, creep)) {
+            creep.memory.task = null;
         }
     }
 }

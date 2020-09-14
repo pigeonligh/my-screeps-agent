@@ -1,4 +1,7 @@
-var constantType = require('constant.type');
+var definationType = require('defination.type');
+
+var taskBase = require('task.base');
+var taskMaker = require('task.maker');
 
 function cmp(a, b) {
     var limit = 0.4;
@@ -9,49 +12,22 @@ function cmp(a, b) {
 }
 
 module.exports.run = function(creep) {
-    if (creep.memory.role != constantType.Repairer.name) {
+    if (creep.memory.role != definationType.Repairer.name) {
         return
     }
 
-    if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
-        creep.memory.repairing = false;
-        creep.memory.target = null;
-        creep.say('🔄 harvest');
-    }
-    if (!creep.memory.repairing && creep.store.getFreeCapacity() < 30) {
-        creep.memory.repairing = true;
-        creep.say('🚧 repair');
-
+    if (!creep.memory.task) {
         var targets = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax,
         });
-        targets = targets.sort(cmp);
-        creep.memory.target = targets[0].id;
+        if (targets.length) {
+            targets = targets.sort(cmp);
+            creep.memory.task = taskMaker.makeRepair(targets[0]);
+        }
     }
-
-    if (creep.memory.repairing) {
-        var target = Game.getObjectById(creep.memory.target);
-        if (target) {
-            var err = creep.repair(target);
-            if (err == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-            }
-            if (target.hits == target.hitsMax) {
-                creep.memory.repairing = false;
-            }
-        } else {
-            creep.memory.repairing = false;
+    if (creep.memory.task) {
+        if (taskBase.step(creep.memory.task, creep)) {
+            creep.memory.task = null;
         }
-    } else {
-        var sources = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.id == '7c527e06fb89334'});
-        if (creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-        }
-        /*
-        var sources = creep.room.find(FIND_SOURCES);
-        if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
-        }
-        */
     }
 }
