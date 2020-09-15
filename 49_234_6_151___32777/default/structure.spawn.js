@@ -54,7 +54,7 @@ module.exports.run = function(spawn) {
         {
             type: definationType.Upgrader,
             tag: "upgrader",
-            number: 3,
+            number: 2,
             param: {},
         },
         {
@@ -81,10 +81,13 @@ module.exports.run = function(spawn) {
         },
     ];
 
+    var idle = true;
     for (var index in config) {
         var object = config[index];
         var obj = _.filter(Game.creeps, (creep) => creep.memory.tag == object.tag);
         if (!obj || obj.length < object.number) {
+            console.log('MainSpawn: spawning ' + object.tag);
+            idle = false;
             spawn.spawnCreep(object.type.body, object.type.name + Game.time, {
                 memory: {
                     role: object.type.name,
@@ -95,6 +98,9 @@ module.exports.run = function(spawn) {
             });
             break;
         }
+    }
+    if (idle) {
+        console.log('MainSpawn: IDLE');
     }
 
     spawn.memory.roles = [
