@@ -48,7 +48,7 @@ module.exports.run = function(spawn) {
         {
             type: definationType.Builder,
             tag: "builder",
-            number: 2,
+            number: 0,
             param: {},
         },
         {
@@ -60,13 +60,13 @@ module.exports.run = function(spawn) {
         {
             type: definationType.Repairer,
             tag: "repairer",
-            number: 2,
+            number: 3,
             param: {},
         },
         {
             type: definationType.Transfer,
             tag: "transfer-tower",
-            number: 1,
+            number: 3,
             param: {
                 toId: '585883e670ef980',
             }

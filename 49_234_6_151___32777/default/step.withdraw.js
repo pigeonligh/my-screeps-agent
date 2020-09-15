@@ -6,6 +6,7 @@ module.exports.create = function(target) {
     var obj = base.create();
 
     obj.target = target;
+    obj.targetId = target.id;
     obj.caller = 'step.withdraw';
 
     obj.hello = '🔄 withdraw';

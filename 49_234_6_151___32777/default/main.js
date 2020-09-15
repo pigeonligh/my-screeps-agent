@@ -2,6 +2,13 @@ var Spawn = require('structure.spawn');
 var Tower = require('structure.tower');
 
 module.exports.loop = function() {
+    for (var index in Memory.creeps) {
+        if (!Game.creeps[index]) {
+            delete Memory.creeps[index];
+            console.log('Release memory ', index);
+        }
+    }
+
     var spawn = Game.spawns['MainSpawn'];
     if (spawn) {
         Spawn.run(spawn);
