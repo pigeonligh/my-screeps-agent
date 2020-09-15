@@ -5,10 +5,10 @@ var taskMaker = require('task.maker');
 
 function calc(structure) {
     if (structure.structureType == STRUCTURE_SPAWN) {
-        return 100;
+        return 50;
     }
     if (structure.structureType == STRUCTURE_EXTENSION) {
-        return 50;
+        return 100;
     }
     if (structure.structureType == STRUCTURE_CONTAINER) {
         return 10;
@@ -17,7 +17,12 @@ function calc(structure) {
 }
 
 function cmp(a, b) {
-    return calc(b) - calc(a);
+    var ca = calc(a);
+    var cb = calc(b);
+    if (ca == cb) {
+        return a.store[RESOURCE_ENERGY] - b.store[RESOURCE_ENERGY];
+    }
+    return cb - ca;
 }
 
 module.exports.run = function(creep) {
@@ -32,7 +37,7 @@ module.exports.run = function(creep) {
                             structure.structureType == STRUCTURE_SPAWN ||
                             structure.structureType == STRUCTURE_CONTAINER ||
                             structure.structureType == STRUCTURE_TOWER) && 
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > structure.store.getCapacity(RESOURCE_ENERGY) * 0.2;
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > structure.store.getCapacity(RESOURCE_ENERGY) * 0.1;
                 }
         });
         var from = Game.getObjectById(creep.memory.param.fromId);

@@ -22,10 +22,13 @@ module.exports.run = function(step, creep) {
 
 module.exports.check = function(step, creep) {
     var target = Game.getObjectById(step.target.id);
-    if (creep.store[RESOURCE_ENERGY] == 0 || target.hits == target.hitsMax) {
-        return true;
+    if (target) {
+        if (creep.store[RESOURCE_ENERGY] == 0 || target.hits == target.hitsMax) {
+            return true;
+        }
+        return false;
     }
-    return false;
+    return true;
 };
 
 module.exports.start = function(step, creep) {

@@ -11,7 +11,13 @@ module.exports.run = function(creep) {
     if (!creep.memory.task) {
         var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
         if (targets.length) {
-            creep.memory.task = taskMaker.makeBuild(targets[0]);
+            var target = targets[0];
+            var source = target.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
+            });
+            if (source) {
+                creep.memory.task = taskMaker.makeBuild(source, target);
+            }
         }
     }
     if (creep.memory.task) {

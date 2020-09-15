@@ -19,13 +19,9 @@ var maker = {
         return taskBase.create('Rest', tasks, cycle);
     },
 
-    makeBuild: function(target) {
-        var closestSource = target.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
-        });
-
+    makeBuild: function(source, target) {
         tasks = [
-            stepWithdraw.create(closestSource),
+            stepWithdraw.create(source),
             stepBuild.create(target),
         ];
         cycle = [];
@@ -44,13 +40,10 @@ var maker = {
         return taskBase.create('Dig', tasks, cycle);
     },
 
-    makeUpgrade: function(target) {
-        var closestSource = target.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
-        });
+    makeUpgrade: function(source, target) {
         tasks = [];
         cycle = [
-            stepWithdraw.create(closestSource),
+            stepWithdraw.create(source),
             stepUpgrade.create(),
         ];
 
@@ -58,11 +51,11 @@ var maker = {
     },
 
     makeTransfer: function(from, to) {
-        tasks = [];
-        cycle = [
+        tasks = [
             stepWithdraw.create(from),
             stepTransfer.create(to),
         ];
+        cycle = [];
 
         return taskBase.create('Transfer', tasks, cycle);
     },
@@ -77,13 +70,9 @@ var maker = {
         return taskBase.create('Harvest', tasks, cycle);
     },
 
-    makeRepair: function(target) {
-        var closestSource = target.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
-        });
-        
+    makeRepair: function(source, target) {
         tasks = [
-            stepWithdraw.create(closestSource),
+            stepWithdraw.create(source),
             stepRepair.create(target),
         ];
         cycle = [];

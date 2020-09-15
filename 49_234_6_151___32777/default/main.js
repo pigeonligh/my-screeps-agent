@@ -1,28 +1,22 @@
-var Spawner = require('structure.spawner');
+var Spawn = require('structure.spawn');
 var Tower = require('structure.tower');
 
 module.exports.loop = function() {
     var spawn = Game.spawns['MainSpawn'];
     if (spawn) {
-        Spawner.run(spawn);
+        Spawn.run(spawn);
     }
 
-    var tower = Game.getObjectById('585883e670ef980');
-    if (tower) {
-        Tower.run(tower);
+    var towers = spawn.room.find(FIND_STRUCTURES, {
+        filter: (structure) => structure.structureType == STRUCTURE_TOWER,
+    })
+    for (var index in towers) {
+        Tower.run(towers[index]);
     }
-
-    roles = [
-        'role.harvester',
-        'role.builder',
-        'role.upgrader',
-        'role.repairer',
-        'role.digger',
-        'role.transfer',
-    ];
 
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
+        var roles = spawn.memory.roles;
         for (var index in roles) {
             require(roles[index]).run(creep);
         }

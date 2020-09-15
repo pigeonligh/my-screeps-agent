@@ -8,7 +8,13 @@ module.exports.run = function(creep) {
         return;
     }
     if (!creep.memory.task) {
-        creep.memory.task = taskMaker.makeUpgrade(creep.room.controller);
+        var target = creep.room.controller;
+        var source = target.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
+        });
+        if (source) {
+            creep.memory.task = taskMaker.makeUpgrade(source, target);
+        }
     }
     if (creep.memory.task) {
         if (taskBase.step(creep.memory.task, creep)) {

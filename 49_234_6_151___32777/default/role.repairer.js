@@ -22,7 +22,13 @@ module.exports.run = function(creep) {
         });
         if (targets.length) {
             targets = targets.sort(cmp);
-            creep.memory.task = taskMaker.makeRepair(targets[0]);
+            var target = targets[0];
+            var source = target.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
+            });
+            if (source) {
+                creep.memory.task = taskMaker.makeRepair(source, target);
+            }
         }
     }
     if (creep.memory.task) {
