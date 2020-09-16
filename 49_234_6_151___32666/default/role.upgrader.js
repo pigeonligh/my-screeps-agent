@@ -12,8 +12,11 @@ module.exports.run = function(creep) {
         var source = target.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 500
         });
+        if (!source) {
+            source = target.pos.findClosestByRange(FIND_SOURCES);
+        }
         if (source) {
-            creep.memory.task = taskMaker.makeUpgrade(source, target);
+            creep.memory.task = taskMaker.makeUpgrade(source);
         }
     }
     if (creep.memory.task) {

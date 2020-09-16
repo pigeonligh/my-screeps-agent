@@ -11,6 +11,10 @@ var stepMove = require('step.move');
 
 var taskBase = require('task.base');
 
+function isSource(source) {
+    return source.room.find(FIND_SOURCES, {filter: (obj) => obj.id == source.id}).length > 0;
+}
+
 var maker = {
     makeRest: function() {
         flag = Game.flags['Rest'];
@@ -20,8 +24,15 @@ var maker = {
     },
 
     makeBuild: function(source, target) {
+        var taskGet;
+        if (isSource(source)) {
+            taskGet = stepHarvest.create(source);
+        } else {
+            taskGet = stepWithdraw.create(source);
+        }
+
         tasks = [
-            stepWithdraw.create(source),
+            taskGet,
             stepBuild.create(target),
         ];
         cycle = [];
@@ -40,12 +51,19 @@ var maker = {
         return taskBase.create('Dig', tasks, cycle);
     },
 
-    makeUpgrade: function(source, target) {
-        tasks = [];
-        cycle = [
-            stepWithdraw.create(source),
+    makeUpgrade: function(source) {
+        var taskGet;
+        if (isSource(source)) {
+            taskGet = stepHarvest.create(source);
+        } else {
+            taskGet = stepWithdraw.create(source);
+        }
+
+        tasks = [
+            taskGet,
             stepUpgrade.create(),
         ];
+        cycle = [];
 
         return taskBase.create('Upgrade', tasks, cycle);
     },
@@ -71,8 +89,15 @@ var maker = {
     },
 
     makeRepair: function(source, target) {
+        var taskGet;
+        if (isSource(source)) {
+            taskGet = stepHarvest.create(source);
+        } else {
+            taskGet = stepWithdraw.create(source);
+        }
+
         tasks = [
-            stepWithdraw.create(source),
+            taskGet,
             stepRepair.create(target),
         ];
         cycle = [];

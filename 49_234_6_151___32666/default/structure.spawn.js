@@ -5,17 +5,17 @@ module.exports.run = function(spawn) {
         {
             type: definationType.Harvester,
             tag: "harvester1",
-            number: 2,
+            number: 1,
             param: {
-                fromId: 'ba3c0774d80c3a8',
+                fromId: '5edf554058c1095',
             },
         },
         {
             type: definationType.Harvester,
             tag: "harvester2",
-            number: 2,
+            number: 1,
             param: {
-                fromId: 'ef990774d80108c',
+                fromId: '28ca554058c4469',
             },
         },
         {
@@ -23,8 +23,8 @@ module.exports.run = function(spawn) {
             tag: "digger1",
             number: 1,
             param: {
-                containerId: '7c527e06fb89334',
-                sourceId: 'ba3c0774d80c3a8',
+                containerId: '7165584e79c3357',
+                sourceId: '5edf554058c1095',
             },
         },
         {
@@ -32,14 +32,14 @@ module.exports.run = function(spawn) {
             tag: "digger2",
             number: 1,
             param: {
-                containerId: 'c1c885073f10d3f',
-                sourceId: 'ef990774d80108c',
+                containerId: '1d325a340c6062c',
+                sourceId: '3b6a554058cc105',
             },
         },
         {
             type: definationType.Transfer,
             tag: "transfer-upgrade",
-            number: 1,
+            number: 0,
             param: {
                 fromId: 'c1c885073f10d3f',
                 toId: '7879bb9eba4d0db',
@@ -48,25 +48,25 @@ module.exports.run = function(spawn) {
         {
             type: definationType.Builder,
             tag: "builder",
-            number: 0,
+            number: 5,
             param: {},
         },
         {
             type: definationType.Upgrader,
             tag: "upgrader",
-            number: 2,
+            number: 3,
             param: {},
         },
         {
             type: definationType.Repairer,
             tag: "repairer",
-            number: 3,
+            number: 1,
             param: {},
         },
         {
             type: definationType.Transfer,
             tag: "transfer-tower",
-            number: 3,
+            number: 0,
             param: {
                 toId: '585883e670ef980',
             }
@@ -74,10 +74,16 @@ module.exports.run = function(spawn) {
         {
             type: definationType.Transfer,
             tag: "transfer-storage",
-            number: 1,
+            number: 0,
             param: {
-                toId: spawn.room.storage.id,
+                // toId: spawn.room.storage.id,
             }
+        },
+        {
+            type: definationType.Claimer,
+            tag: "claimer-test",
+            number: 0,
+            param: {}
         },
     ];
 
@@ -100,7 +106,7 @@ module.exports.run = function(spawn) {
         }
     }
     if (idle) {
-        console.log('MainSpawn: IDLE');
+        // console.log('MainSpawn: IDLE');
     }
 
     spawn.memory.roles = [
@@ -110,5 +116,6 @@ module.exports.run = function(spawn) {
         'role.repairer',
         'role.digger',
         'role.transfer',
+        'role.claimer'
     ];
 };

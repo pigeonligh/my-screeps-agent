@@ -25,6 +25,10 @@ var definationType = {
         name: 'Transfer',
         body: definationBody.Transfer,
     },
+    Claimer: {
+        name: 'Claimer',
+        body: definationBody.Claimer,
+    },
 };
 
 module.exports = definationType;
